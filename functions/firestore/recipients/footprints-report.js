@@ -266,16 +266,11 @@ const getStatusObject = (statusObjectMap, phoneNumber) =>
   statusObjectMap.get(phoneNumber) || {};
 
 const commitMultipleBatches = batchesArray => {
-  let result = Promise.resolve();
 
-  batchesArray.forEach((batch, index) => {
-    result = batch
-      .commit()
-      .then(() => console.log(`Commited: ${index}`))
-      .catch((error) => console.error('BatchError:', error));
-  });
+  const promise = batchesArray.map((batch) => batch.commit());
 
-  return result;
+  return Promise.all(promise);
+
 };
 
 const handleSheetTwo = locals => {
